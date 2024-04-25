@@ -1,0 +1,31 @@
+pipeline {
+    agent {
+        label 'slave-3'
+    }
+    stages {
+        stage('Clone Repository') {
+            steps {
+                script {
+                    // Clone the Git repository
+                    git branch: 'main', url: 'https://github.com/Ya-shu1/Node-JS-_APP.git'
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build docker image
+                    docker.build("nodejs", ".")
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Run docker container
+                    docker.image("nodejs").run('-p 3000:3000')
+                }
+            }
+        }
+    }
+}
